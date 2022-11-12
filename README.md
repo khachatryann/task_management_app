@@ -1,10 +1,8 @@
 # Task Management System Laravel
-___
 
 Simple but best task management app :boom:
 
 ## Getting Started
-___
 
 Clone the project by running this command
 ```bash
