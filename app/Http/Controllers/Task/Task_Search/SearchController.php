@@ -22,7 +22,7 @@ class SearchController extends Controller
             ->join('users AS first_us', 'tasks.created_by', '=', 'first_us.id')
             ->join('users AS second_us', 'tasks.assign_to', '=', 'second_us.id')
             ->join('tasks_status', 'tasks.status_id', '=', 'tasks_status.id')
-            ->where('tasks.name', 'LIKE', "%{$search}%")
+            ->where('tasks.name', 'LIKE', "{$search}%")
             ->get();
 
 

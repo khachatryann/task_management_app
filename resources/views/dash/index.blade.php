@@ -30,7 +30,6 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->role_id }}</td>
-                    <td></td>
                     @if($user->role_id == 'Admin')
                         <td></td>
                     @else

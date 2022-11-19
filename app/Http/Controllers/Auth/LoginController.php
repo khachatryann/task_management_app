@@ -16,10 +16,11 @@ class LoginController extends Controller
     public function login(LoginRequest $request) {
         $data = [
           'email' => $request['email'],
-          'password' => $request['password']
+          'password' => $request['password'],
         ];
 
-        if(Auth::attempt($data)) {
+
+        if(Auth::attempt($data, $request->get('remember'))) {
             return redirect()->route('home');
         } else {
             return back()->with('fail', 'Incorrect Login or Password');

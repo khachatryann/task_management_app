@@ -29,6 +29,11 @@
                     </span>
                 </div>
 
+                    <div class="form-group mb-3">
+                        <input class="form-check-input" type="checkbox" name="remember" id="remember" value="1">
+                        <label for="remember">Remember me</label>
+                    </div>
+
                 <button class="btn btn-success">Send</button>
                 <a href="{{ route('register_view') }}">Don't have an Account?</a>
             </form>

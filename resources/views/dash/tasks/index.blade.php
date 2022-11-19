@@ -7,23 +7,28 @@
 
     <div class="container">
 
+        @if(Auth::user()->role_id == 2)
+
+            @if(session('success'))
+                <div class="alert alert-success mt-2">{{ session('success') }}</div>
+            @elseif(session('delete'))
+                <div class="alert alert-danger mt-2">{{ session('delete') }}</div>
+            @endif
+        @endif
+
+        @if(Auth::user()->role_id == 1)
+            <a href="{{ route('programmer_tasks') }}" class="btn btn-link">Show only my tasks</a>
+        @endif
+
         <div class="pagination mt-2">
-            {{ $tasks->links() }}
+            {{ $tasks->links('vendor.pagination.custom') }}
         </div>
 
-        @if(Auth::user()->role_id == 2)
-        <a href="{{ route('tasks.create') }}" class="btn btn-outline-primary mt-2">Create Task</a>
+        <div class="card__container" style="display: flex;">
 
-        @if(session('success'))
-            <div class="alert alert-success mt-2">{{ session('success') }}</div>
-        @elseif(session('delete'))
-            <div class="alert alert-danger mt-2">{{ session('delete') }}</div>
-        @endif
-        @endif
-
-            @foreach($tasks as $task)
+        @foreach($tasks as $task)
             @if(Auth::user()->role_id == 2 && Auth::user()->name == $task['created_by'])
-    <div class="card mt-2" style="width: 18rem;">
+    <div class="card mt-2" style="width: 18rem; margin-left: 35px">
         <div class="card-body">
             <h5 class="card-title">{{ $task['name'] }}</h5>
             <p class="card-text">{{ $task['description'] }}</p>
@@ -40,7 +45,7 @@
     </div>
 
         @elseif(Auth::user()->role_id == 1)
-                    <div class="card mt-2" style="width: 18rem;">
+                <div class="card mt-2" style="width: 18rem; margin-left: 35px">
                         <div class="card-body">
                             <h5 class="card-title">{{ $task['name'] }}</h5>
                             <p class="card-text">{{ $task['description'] }}</p>
@@ -66,5 +71,6 @@
                     </div>
         @endif
         @endforeach
+        </div>
     </div>
 @endsection

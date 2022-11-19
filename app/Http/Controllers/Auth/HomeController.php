@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class HomeController extends Controller
@@ -20,7 +22,13 @@ class HomeController extends Controller
         ->join('roles', 'users.role_id', '=', 'roles.id')
         ->get();
 
-        return view('dash.index', compact('users'));
+        $tasks = Task::select(
+            'tasks.id',
+            'users.name as created_by')
+            ->join('users', 'tasks.created_by', '=', 'users.id')
+            ->get();
+
+        return view('dash.index', compact('users', 'tasks'));
     }
 
     public function logout() {

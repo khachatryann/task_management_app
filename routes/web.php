@@ -40,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/task/search/', [SearchController::class, 'index'])->name('task_search');
     Route::get('/user/search/', [AdminController::class, 'search_user'])->name('user_search');
 
+    //only auth->programmer task
+    Route::get('/selected/tasks', [TaskController::class, 'prg_tasks'])->name('programmer_tasks');
+
 });
 
 

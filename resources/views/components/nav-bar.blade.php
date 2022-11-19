@@ -36,6 +36,12 @@
                 <li class="nav-item" style="margin-top: 6%; margin-left: 10px">
                     <a class="nav-link {{ (Request::is("tasks") ? 'active' : '') }}" href="{{ route('tasks.index') }}">Tasks</a>
                 </li>
+
+                @if(\Illuminate\Support\Facades\Auth::user()->role_id == 1)
+                <li class="nav-item" style="margin-top: 6%; margin-left: 10px">
+                    <a class="nav-link {{ (Request::is("selected/tasks") ? 'active' : '') }}" href="{{ route('programmer_tasks') }}">Assigned to me</a>
+                </li>
+                @endif
             </ul>
 
             <form class="d-flex" method="get" action="{{ route('task_search') }}">

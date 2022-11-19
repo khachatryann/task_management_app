@@ -22,6 +22,7 @@ class TaskController extends Controller
 
         $tasks_status = DB::table('tasks_status')->get();
 
+
         $tasks = Task::select(
             'tasks.id',
             'tasks.name',
@@ -53,7 +54,7 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(TaskRequest $request)
@@ -66,7 +67,7 @@ class TaskController extends Controller
             'description' => $request['description']
         ];
 
-        if(Task::create($data)) {
+        if (Task::create($data)) {
             return redirect()
                 ->route('tasks.index')
                 ->with('success', 'Task successfully created');
@@ -76,7 +77,7 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show(Task $task)
@@ -104,7 +105,7 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Task $task)
@@ -135,8 +136,8 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(TaskRequest $request, Task $task)
@@ -148,7 +149,7 @@ class TaskController extends Controller
         ];
 
         $update = $task->update($data);
-        if($update) {
+        if ($update) {
             return redirect()->route('tasks.index');
         }
     }
@@ -156,21 +157,24 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Task $task)
     {
         $delete = $task->delete();
 
-        if($delete) {
+        if ($delete) {
             return redirect()
                 ->route('tasks.index')
                 ->with('delete', 'Task deleted');
         }
     }
 
-    public function api_index() {
+
+    //API
+    public function api_index()
+    {
 
         return Task::select(
             'tasks.id',
@@ -184,4 +188,29 @@ class TaskController extends Controller
             ->join('tasks_status', 'tasks.status_id', '=', 'tasks_status.id')
             ->get();
     }
+
+
+    //Programmer tasks
+    public function prg_tasks()
+    {
+
+        $tasks_status = DB::table('tasks_status')->get();
+
+
+        $tasks = Task::select(
+            'tasks.id',
+            'tasks.name',
+            'tasks.description',
+            'tasks_status.status AS status_id',
+            'first_us.name AS created_by',
+            'second_us.name AS assign_to')
+            ->join('users AS first_us', 'tasks.created_by', '=', 'first_us.id')
+            ->join('users AS second_us', 'tasks.assign_to', '=', 'second_us.id')
+            ->join('tasks_status', 'tasks.status_id', '=', 'tasks_status.id')
+            ->get();
+
+
+        return view('dash.tasks.programmer_tasks.index', compact('tasks', 'tasks_status'));
+    }
+
 }
